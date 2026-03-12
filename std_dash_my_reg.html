@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Registered Events</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('assets/club_dash_pic.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
+      min-height: 100vh;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      color: #ffa500;
+    }
+
+    .registered-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .event-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-box h3 {
+      color: #ffcc00;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin: 40px auto 0;
+      padding: 12px 24px;
+      background-color: orange;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: darkorange;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>My Registered Events</h1>
+    <div class="registered-list">
+      <div class="event-box">
+        <h3>Vertex 2025</h3>
+        <p>Date: XXXXX</p>
+        <p>Status: Registered</p>
+      </div>
+      <div class="event-box">
+        <h3>Cultural fest</h3>
+        <p>Date: XXXXX</p>
+        <p>Status: Registered</p>
+      </div>
+    </div>
+
+    <a href="student_dashboard.php" class="back-button">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

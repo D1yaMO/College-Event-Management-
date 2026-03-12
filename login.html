@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login / Signup | MVJCE Event System</title>
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: #000;
+}
+
+video.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: -2;
+  opacity: 0.8;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+}
+
+.login-container {
+  background: rgba(51, 51, 51, 0.85);
+  padding: 40px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px orange;
+  width: 400px;
+  z-index: 1;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+}
+
+button,
+.back-button {
+  width: 100%;
+  padding: 14px;
+  background: orange;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  text-decoration: none;
+}
+
+button:hover,
+.back-button:hover {
+  background: darkorange;
+}
+
+.toggle-btns {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.toggle-btns button {
+  width: 48%;
+  background: #333;
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.toggle-btns button.active {
+  background: orange;
+}
+
+form {
+  display: none;
+}
+
+form.active {
+  display: block;
+}
+
+a.back-button {
+  margin-top: 10px;
+  text-decoration: none;
+  color: #fff;
+  display: block;
+  text-align: center;
+}
+
+a.back-button:hover {
+  color: darkorange;
+}
+</style>
+</head>
+<body>
+
+<video autoplay muted loop class="bg-video">
+  <source src="assets/video_3.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<div class="overlay"></div>
+
+<div class="login-container">
+  <div class="toggle-btns">
+    <button id="loginBtn" class="active">Login</button>
+    <button id="signupBtn">Sign Up</button>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <form id="loginForm" class="active" action="login.php" method="post">
+    <input type="email" id="loginEmail" name="email" placeholder="Email" required />
+    <input type="password" id="loginPassword" name="password" placeholder="Password" required />
+    <select id="loginRole" name="role" title="User Role" required>
+      <option value="">Select Role</option>
+      <option value="student">Student</option>
+      <option value="faculty">Faculty</option>
+      <option value="club_admin">Club Admin</option>
+    </select>
+    <button type="submit">Login</button>
+  </form>
+
+  <!-- SIGNUP FORM -->
+  <form id="signupForm" action="register.php" method="post">
+    <input type="text" id="signupFullname" name="name" placeholder="Full Name" required />
+    <input type="email" id="signupEmail" name="email" placeholder="Email" required />
+    <input type="password" id="signupPassword" name="password" placeholder="Password (min 6 chars)" required />
+    <input type="password" id="signupConfirm" name="confirm_password" placeholder="Confirm Password" required />
+    <select id="signupRole" name="role" title="User Role" required>
+      <option value="">Select Role</option>
+      <option value="student">Student</option>
+      <option value="faculty">Faculty</option>
+      <option value="club_admin">Club Admin</option>
+    </select>
+    <button type="submit">Sign Up</button>
+  </form>
+
+  <a href="index.html" class="back-button">← Back to Home</a>
+</div>
+
+<script>
+const loginBtn = document.getElementById('loginBtn');
+const signupBtn = document.getElementById('signupBtn');
+const loginForm = document.getElementById('loginForm');
+const signupForm = document.getElementById('signupForm');
+
+// Toggle between login and signup
+loginBtn.addEventListener('click', () => {
+  loginBtn.classList.add('active');
+  signupBtn.classList.remove('active');
+  loginForm.classList.add('active');
+  signupForm.classList.remove('active');
+});
+
+signupBtn.addEventListener('click', () => {
+  signupBtn.classList.add('active');
+  loginBtn.classList.remove('active');
+  signupForm.classList.add('active');
+  loginForm.classList.remove('active');
+});
+
+// Login validation
+loginForm.addEventListener('submit', function(e){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const role = document.getElementById('loginRole').value;
+
+  if(!email || !password || !role){
+    alert("Please fill all login fields correctly!");
+    e.preventDefault();
+  }
+});
+
+// Signup validation
+signupForm.addEventListener('submit', function(e){
+  const fullname = document.getElementById('signupFullname').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value.trim();
+  const confirm = document.getElementById('signupConfirm').value.trim();
+  const role = document.getElementById('signupRole').value;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if(!fullname || !email || !password || !confirm || !role){
+    alert("Please fill all signup fields!");
+    e.preventDefault();
+    return;
+  }
+
+  if(!emailRegex.test(email)){
+    alert("Please enter a valid email address!");
+    e.preventDefault();
+    return;
+  }
+
+  if(password.length < 6){
+    alert("Password must be at least 6 characters!");
+    e.preventDefault();
+    return;
+  }
+
+  if(password !== confirm){
+    alert("Passwords do not match!");
+    e.preventDefault();
+    return;
+  }
+});
+</script>
+
+</body>
+</html>

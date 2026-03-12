@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Recap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('assets/club_dash_pic.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+      color: #ffa500;
+    }
+
+    .recap-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    }
+
+    .event-photo {
+      width: 50%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .event-details h2 {
+      margin-top: 0;
+      color: #ffa500;
+    }
+
+    .event-details p,
+    .event-details ul {
+      line-height: 1.7;
+    }
+
+    .back-button {
+      display: block;
+      margin: 40px auto 0;
+      padding: 12px 24px;
+      background-color: orange;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      width: fit-content;
+      box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover {
+      background-color: darkorange;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="header">
+      <h1>Event Recap: Annual Cultural Fest 2025</h1>
+    </div>
+
+    <div class="recap-container">
+      <img src="assets/swayam logo (final).png" alt="Event photo" class="event-photo">
+      
+      <div class="event-details">
+        <h2>Event Highlights</h2>
+        <p>
+          The Annual Cultural Fest 2025 was a grand celebration of creativity, talent, and unity. 
+          With many clubs participating, the campus buzzed with energy through dance performances, 
+          musical nights, art exhibits, and theatrical acts.
+        </p>
+
+        <h2>Key Moments</h2>
+        <ul>
+          <li>Dance event by Nrityatrix</li>
+          <li>Open Mic by Saahitya and Toastmasters</li>
+          <li>Battle of Bands hosted by Dhwani</li>
+          <li>Live painting event by Aakriti</li>
+          <li>Award ceremony for top performances</li>
+        </ul>
+
+        <p>
+          We thank all the volunteers and participants who made this fest unforgettable. 
+          Let’s carry this spirit forward to the next year!
+        </p>
+      </div>
+    </div>
+
+    <a href="student_dashboard.php" class="back-button">← Back to Dashboard</a>
+  </div>
+</body>
+</html>
