@@ -1,121 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Event Recap</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Recap | CDG</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/globals.css">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: url('assets/club_dash_pic.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
+    body { padding: 40px; background: var(--bg-dark); }
+    .container { max-width: 1000px; margin: 60px auto; }
+    .back-btn { position: fixed; top: 30px; left: 30px; color: var(--text-muted); font-size: 1.5rem; transition: 0.3s; z-index: 100; }
+    .back-btn:hover { color: var(--primary); transform: translateX(-5px); }
+    
+    .recap-header { margin-bottom: 3rem; text-align: center; }
+    .recap-header h1 { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; }
+    
+    .video-section { margin-bottom: 3rem; }
+    .video-container {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
     }
-
-    .overlay {
-      background-color: rgba(0, 0, 0, 0.75);
-      min-height: 100vh;
-      padding: 40px;
+    .video-container video { width: 100%; height: 100%; object-fit: cover; }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
     }
-
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
+    .gallery-item {
+      border-radius: 15px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border-color);
+      transition: all 0.4s ease;
     }
-
-    .header h1 {
-      margin: 0;
-      font-size: 32px;
-      color: #ffa500;
-    }
-
-    .recap-container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
-    }
-
-    .event-photo {
-      width: 50%;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .event-details h2 {
-      margin-top: 0;
-      color: #ffa500;
-    }
-
-    .event-details p,
-    .event-details ul {
-      line-height: 1.7;
-    }
-
-    .back-button {
-      display: block;
-      margin: 40px auto 0;
-      padding: 12px 24px;
-      background-color: orange;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      text-align: center;
-      text-decoration: none;
-      font-size: 16px;
-      width: fit-content;
-      box-shadow: 0 4px 10px rgba(255, 165, 0, 0.4);
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .back-button:hover {
-      background-color: darkorange;
-      transform: scale(1.05);
+    .gallery-item:hover { transform: scale(1.05); border-color: var(--primary); z-index: 2; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .stats-recap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
     }
   </style>
 </head>
 <body>
-  <div class="overlay">
-    <div class="header">
-      <h1>Event Recap: Annual Cultural Fest 2025</h1>
-    </div>
 
-    <div class="recap-container">
-      <img src="assets/swayam logo (final).png" alt="Event photo" class="event-photo">
-      
-      <div class="event-details">
-        <h2>Event Highlights</h2>
-        <p>
-          The Annual Cultural Fest 2025 was a grand celebration of creativity, talent, and unity. 
-          With many clubs participating, the campus buzzed with energy through dance performances, 
-          musical nights, art exhibits, and theatrical acts.
-        </p>
+<a href="student_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i></a>
 
-        <h2>Key Moments</h2>
-        <ul>
-          <li>Dance event by Nrityatrix</li>
-          <li>Open Mic by Saahitya and Toastmasters</li>
-          <li>Battle of Bands hosted by Dhwani</li>
-          <li>Live painting event by Aakriti</li>
-          <li>Award ceremony for top performances</li>
-        </ul>
-
-        <p>
-          We thank all the volunteers and participants who made this fest unforgettable. 
-          Let’s carry this spirit forward to the next year!
-        </p>
-      </div>
-    </div>
-
-    <a href="student_dashboard.php" class="back-button">← Back to Dashboard</a>
+<div class="container">
+  <div class="recap-header">
+    <h1>Swayam Cultural Fest 2025</h1>
+    <p style="color: var(--text-muted); font-size: 1.1rem;">Relive the most magical moments of the year.</p>
   </div>
+
+  <section class="stats-recap">
+    <div class="glass-card stat-card">
+      <span class="value">4500+</span>
+      <span class="label">Footfall</span>
+    </div>
+    <div class="glass-card stat-card">
+      <span class="value">45</span>
+      <span class="label">Performances</span>
+    </div>
+    <div class="glass-card stat-card">
+      <span class="value">12</span>
+      <span class="label">Clubs Involved</span>
+    </div>
+    <div class="glass-card stat-card">
+      <span class="value">₹50K</span>
+      <span class="label">Prize Pool</span>
+    </div>
+  </section>
+
+  <section class="video-section">
+    <h2 style="margin-bottom: 1.5rem; font-weight: 800;"><i class="fas fa-film" style="color: var(--primary);"></i> Aftermovie Recap</h2>
+    <div class="video-container">
+      <video controls poster="assets/swayam logo (final).png">
+        <source src="assets/MVJ reel.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
+
+  <section class="gallery-section">
+    <h2 style="margin-bottom: 1.5rem; font-weight: 800;"><i class="fas fa-images" style="color: var(--primary);"></i> Memory Gallery</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="assets/Sample Event 1.jpeg" alt="Recap 1"></div>
+      <div class="gallery-item"><img src="assets/Sample Event 2.jpeg" alt="Recap 2"></div>
+      <div class="gallery-item"><img src="assets/Sample event 3.jpeg" alt="Recap 3"></div>
+      <div class="gallery-item"><img src="assets/sample_event5.jpeg" alt="Recap 4"></div>
+      <div class="gallery-item"><img src="assets/sample_event6.jpeg" alt="Recap 5"></div>
+      <div class="gallery-item"><img src="assets/sample_event7.jpeg" alt="Recap 6"></div>
+    </div>
+  </section>
+
+  <div class="glass-card" style="margin-top: 4rem; padding: 2.5rem; text-align: center;">
+    <h2 style="font-weight: 800; margin-bottom: 1rem;">Thank you for making it special!</h2>
+    <p style="color: var(--text-muted);">We look forward to seeing you again at Vertex 2026. Stay tuned for more updates.</p>
+  </div>
+</div>
+
 </body>
 </html>

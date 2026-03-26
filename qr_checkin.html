@@ -1,51 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>QR Check-in</title>
-
-<style>
-
-body{
-font-family:Poppins;
-background:#111;
-color:white;
-text-align:center;
-padding:40px;
-}
-
-.box{
-background:#222;
-padding:40px;
-border-radius:10px;
-display:inline-block;
-}
-
-a{
-color:orange;
-display:block;
-margin-top:20px;
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Check-in | CDG</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/globals.css">
+  <style>
+    body { 
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.1), transparent), var(--bg-dark);
+    }
+    .qr-card {
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      padding: 3rem;
+      position: relative;
+    }
+    .back-btn {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+    }
+    .back-btn:hover { color: var(--primary); }
+    
+    .qr-wrapper {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 20px;
+      display: inline-block;
+      margin: 2rem 0;
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.2);
+    }
+    .qr-wrapper img {
+      display: block;
+      width: 200px;
+      height: 200px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
-
 <body>
 
-<h2>QR Event Check-in</h2>
+<div class="glass-card qr-card">
+  <a href="student_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+  
+  <h1 style="font-weight: 800; margin-bottom: 0.5rem;">QR Check-in</h1>
+  <p style="color: var(--text-muted);">Show this code at the event entrance to mark your attendance.</p>
 
-<div class="box">
+  <div class="qr-wrapper">
+    <!-- Generating a real QR code using QRServer API -->
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=STUDENT_CHECKIN_12345" alt="Student QR Code">
+  </div>
 
-<p>Scan the QR Code at the event entrance.</p>
+  <div class="status-badge">
+    <i class="fas fa-sync-alt fa-spin"></i> Ready to scan
+  </div>
 
-<img src="assets/qr.png" width="150" alt="QR code for event check-in">
-
+  <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+    <p style="font-size: 0.9rem; color: var(--text-muted);">
+      Event: <strong>Vertex 2026 - Hackathon</strong><br>
+      Venue: <strong>Main Auditorium</strong>
+    </p>
+  </div>
 </div>
-
-<a href="student_dashboard.php">⬅ Back to Dashboard</a>
 
 </body>
 </html>
