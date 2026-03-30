@@ -4,6 +4,30 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
     header("Location: login.html");
     exit();
 }
+
+//(event creation)
+$conn2 = new mysqli("localhost","root","","event_management");
+
+if ($conn2->connect_error) {
+    die("Connection failed: " . $conn2->connect_error);
+}
+
+if (isset($_POST['create_event'])) {
+    $name = $_POST['event_name'];
+    $date = $_POST['event_date'];
+    $venue = $_POST['venue'];
+    $desc = $_POST['description'];
+    $user = $_SESSION['name'];
+
+    $sql = "INSERT INTO events (name, event_date, venue, description, created_by) 
+            VALUES ('$name', '$date', '$venue', '$desc', '$user')";
+
+    if ($conn2->query($sql) === TRUE) {
+        echo "<script>alert('Event created successfully!');</script>";
+    } else {
+        echo "Error: " . $conn2->error;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +72,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
     <nav class="sidebar-nav">
       <a href="#" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
       <a href="#" class="nav-link"><i class="fas fa-plus-circle"></i> Create Event</a>
-      <a href="#" class="nav-link"><i class="fas fa-edit"></i> Manage Events</a>
+      <a href="manage_events.php" class="nav-link"><i class="fas fa-edit"></i> Manage Events</a>
       <a href="#" class="nav-link"><i class="fas fa-users"></i> Registrations</a>
       <a href="#" class="nav-link"><i class="fas fa-tools"></i> Equipment</a>
       <a href="#" class="nav-link"><i class="fas fa-question-circle"></i> Queries</a>
@@ -70,11 +94,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
     </header>
 
     <div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 2rem;">
-      <!-- Main Content Area -->
+      
       <div class="left-col">
-        <!-- Faculty Requests Section -->
+
+        <!-- Faculty Requests -->
         <section class="glass-card" style="margin-bottom: 2rem;">
           <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-user-shield" style="color: var(--primary);"></i> Faculty Requests</h2>
+
           <?php
           $conn = new mysqli("localhost","root","","event_management");
           if ($conn->connect_error) {
@@ -83,7 +109,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
               $result = $conn->query("SELECT * FROM faculty_requests WHERE status='pending'");
               if($result && $result->num_rows > 0){
                   while($row = $result->fetch_assoc()){
-                      ?>
+          ?>
                       <div class="request-card">
                         <p><strong><?php echo $row['name']; ?></strong> (<?php echo $row['email']; ?>)</p>
                         <div class="action-btns">
@@ -91,7 +117,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
                           <a href="reject_faculty.php?id=<?php echo $row['user_id']; ?>" class="btn reject-btn" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Reject</a>
                         </div>
                       </div>
-                      <?php
+          <?php
                   }
               } else {
                   echo "<p style='color: var(--text-muted);'>No pending faculty requests at the moment.</p>";
@@ -101,25 +127,33 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
           ?>
         </section>
 
-        <!-- Create Event Form -->
+        <!-- Create Event -->
         <section class="glass-card">
           <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-plus-circle" style="color: var(--primary);"></i> Create New Event</h2>
-          <form style="display: flex; flex-direction: column; gap: 1rem;">
+
+          <!-- ✅ FIXED FORM ONLY -->
+          <form method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-              <input type="text" placeholder="Event Name">
-              <input type="date">
+              <input type="text" name="event_name" placeholder="Event Name" required>
+              <input type="date" name="event_date" required>
             </div>
-            <input type="text" placeholder="Venue Location">
-            <textarea placeholder="Event Description" rows="4"></textarea>
-            <button type="submit" class="btn btn-primary" style="padding: 1rem;">Publish Event</button>
+
+            <input type="text" name="venue" placeholder="Venue Location" required>
+
+            <textarea name="description" placeholder="Event Description" rows="4" required></textarea>
+
+            <button type="submit" name="create_event" class="btn btn-primary" style="padding: 1rem;">Publish Event</button>
           </form>
+
         </section>
+
       </div>
 
-      <!-- Sidebar Area -->
+      <!-- Right Side -->
       <div class="right-col">
         <section class="glass-card" style="margin-bottom: 2rem;">
           <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-tools" style="color: var(--primary);"></i> Quick Tools</h2>
+
           <div style="display: flex; flex-direction: column; gap: 1rem;">
             <div style="padding: 1rem; background: var(--surface-dark); border-radius: 8px;">
               <h4 style="margin-bottom: 0.5rem;">Request Equipment</h4>
@@ -127,6 +161,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
               <input type="number" placeholder="Quantity" style="margin-bottom: 0.5rem;">
               <button class="btn btn-outline" style="width: 100%; font-size: 0.85rem;">Send Request</button>
             </div>
+
             <div style="padding: 1rem; background: var(--surface-dark); border-radius: 8px;">
               <h4 style="margin-bottom: 0.5rem;">Upload Attendance</h4>
               <input type="file" style="margin-bottom: 0.5rem; font-size: 0.8rem;">
@@ -135,14 +170,15 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
           </div>
         </section>
       </div>
+
     </div>
   </main>
 </div>
 
 <script>
-  function toggleMenu() {
-    document.getElementById('sidebar').classList.toggle('active');
-  }
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('active');
+}
 </script>
 
 </body>
