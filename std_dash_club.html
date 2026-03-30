@@ -4,57 +4,148 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Explore Clubs | CDG</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/globals.css">
+
   <style>
-    body { padding: 40px; background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.05), transparent), var(--bg-dark); }
-    .container { max-width: 1100px; margin: 60px auto; }
-    .back-btn { position: fixed; top: 30px; left: 30px; color: var(--text-muted); font-size: 1.5rem; transition: 0.3s; z-index: 100; }
-    .back-btn:hover { color: var(--primary); transform: translateX(-5px); }
-    .club-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .club-card { text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; min-height: 220px; }
-    .club-card:hover { transform: translateY(-8px); border-color: var(--primary); background: rgba(255, 255, 255, 0.08); }
-    .club-logo { width: 90px; height: 90px; border-radius: 50%; background: #fff; padding: 10px; object-fit: contain; margin-bottom: 0.5rem; }
-    .club-card h3 { font-weight: 700; font-size: 1.25rem; }
+    body {
+      padding: 40px;
+      background: radial-gradient(circle at top right, rgba(245, 158, 11, 0.05), transparent), var(--bg-dark);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 60px auto;
+    }
+
+    .back-btn {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      transition: 0.3s;
+      z-index: 100;
+    }
+
+    .back-btn:hover {
+      color: var(--primary);
+      transform: translateX(-5px);
+    }
+
+    .club-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .club-card {
+      text-align: center;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      min-height: 220px;
+      text-decoration: none;
+    }
+
+    .club-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .club-logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 10px;
+      object-fit: contain;
+    }
+
+    .club-card h3 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: white;
+    }
+
+    .club-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
   </style>
 </head>
+
 <body>
-  <a href="student_dashboard.php" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-  <div class="container">
-    <h1 style="margin-bottom: 2.5rem; font-weight: 800; text-align: center;">Explore College Clubs</h1>
-    <div class="club-grid">
-      <a href="https://www.instagram.com/aakriti.artclub" target="_blank" class="glass-card club-card">
-        <img src="assets/aakriti logo sampl1.png" alt="Aakriti" class="club-logo">
-        <h3>Aakriti</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Art & Design Club</p>
-      </a>
-      <a href="https://www.instagram.com/toastmasters" target="_blank" class="glass-card club-card">
-        <img src="assets/tmc logo sample2.png" alt="Toastmasters" class="club-logo">
-        <h3>Toastmasters</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Public Speaking Club</p>
-      </a>
-      <div class="glass-card club-card">
-        <div style="width: 90px; height: 90px; border-radius: 50%; background: var(--surface-light); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary);"><i class="fas fa-music"></i></div>
-        <h3>Dhwani</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Music Club</p>
+
+<a href="student_dashboard.php" class="back-btn">
+  <i class="fas fa-arrow-left"></i>
+</a>
+
+<div class="container">
+  <h1 style="margin-bottom: 2.5rem; font-weight: 800; text-align: center;">
+    Explore College Clubs
+  </h1>
+
+  <div class="club-grid">
+
+    <!-- AAKRITI -->
+    <a href="https://www.instagram.com/aakriti.artclub" target="_blank" class="glass-card club-card">
+      <img src="assets/aakriti logo sampl1.png" class="club-logo">
+      <h3>Aakriti</h3>
+      <p>Art & Design Club</p>
+    </a>
+
+    <!-- TOASTMASTERS -->
+    <a href="https://www.instagram.com/toastmasters" target="_blank" class="glass-card club-card">
+      <img src="assets/tmc logo sample2.png" class="club-logo">
+      <h3>Toastmasters</h3>
+      <p>Public Speaking Club</p>
+    </a>
+
+    <!-- DHWANI -->
+    <a href="https://www.instagram.com/dhwani_musicclub" target="_blank" class="glass-card club-card">
+      <div style="width:90px;height:90px;border-radius:50%;background:var(--surface-light);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--primary);">
+        <i class="fas fa-music"></i>
       </div>
-      <div class="glass-card club-card">
-        <div style="width: 90px; height: 90px; border-radius: 50%; background: var(--surface-light); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary);"><i class="fas fa-book"></i></div>
-        <h3>Saahitya</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Literary Club</p>
+      <h3>Dhwani</h3>
+      <p>Music Club</p>
+    </a>
+
+    <!-- SAAHITYA -->
+    <a href="https://www.instagram.com/saahitya_literaryclub" target="_blank" class="glass-card club-card">
+      <div style="width:90px;height:90px;border-radius:50%;background:var(--surface-light);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--primary);">
+        <i class="fas fa-book"></i>
       </div>
-      <div class="glass-card club-card">
-        <div style="width: 90px; height: 90px; border-radius: 50%; background: var(--surface-light); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary);"><i class="fas fa-microphone-alt"></i></div>
-        <h3>TedX</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Ideas Worth Spreading</p>
+      <h3>Saahitya</h3>
+      <p>Literary Club</p>
+    </a>
+
+    <!-- TEDX -->
+    <a href="https://www.instagram.com/tedxcdg" target="_blank" class="glass-card club-card">
+      <div style="width:90px;height:90px;border-radius:50%;background:var(--surface-light);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--primary);">
+        <i class="fas fa-microphone-alt"></i>
       </div>
-      <div class="glass-card club-card">
-        <div style="width: 90px; height: 90px; border-radius: 50%; background: var(--surface-light); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary);"><i class="fas fa-shoe-prints"></i></div>
-        <h3>Nrityatrix</h3>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Dance Club</p>
+      <h3>TedX</h3>
+      <p>Ideas Worth Spreading</p>
+    </a>
+
+    <!-- NRITYATRIX -->
+    <a href="https://www.instagram.com/nrityatrix" target="_blank" class="glass-card club-card">
+      <div style="width:90px;height:90px;border-radius:50%;background:var(--surface-light);display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--primary);">
+        <i class="fas fa-shoe-prints"></i>
       </div>
-    </div>
+      <h3>Nrityatrix</h3>
+      <p>Dance Club</p>
+    </a>
+
   </div>
+</div>
+
 </body>
 </html>
