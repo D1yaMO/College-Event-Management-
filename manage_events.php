@@ -42,32 +42,7 @@ if (isset($_GET['delete'])) {
 
 <div class="dashboard-container">
 
-  <!-- SIDEBAR SAME AS DASHBOARD -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <img src="assets/club_dash_pic.jpeg" alt="Profile"
-        onerror="this.src='https://ui-avatars.com/api/?name=<?php echo $_SESSION['name']; ?>&background=f59e0b&color=fff'">
-      <h3><?php echo htmlspecialchars($_SESSION['name']); ?></h3>
-      <p style="font-size: 0.8rem; color: var(--text-muted);">Club Administrator</p>
-    </div>
-
-    <nav class="sidebar-nav">
-      <a href="clubhead_dashboard.php" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
-      <a href="clubhead_dashboard.php" class="nav-link"><i class="fas fa-plus-circle"></i> Create Event</a>
-      <a href="manage_events.php" class="nav-link active"><i class="fas fa-edit"></i> Manage Events</a>
-      <a href="#" class="nav-link"><i class="fas fa-users"></i> Registrations</a>
-      <a href="#" class="nav-link"><i class="fas fa-tools"></i> Equipment</a>
-      <a href="#" class="nav-link"><i class="fas fa-question-circle"></i> Queries</a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <form action="logout.php" method="post">
-        <button type="submit" class="btn btn-outline" style="width: 100%; border-color: #ef4444; color: #ef4444;">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-      </form>
-    </div>
-  </aside>
+  <?php include 'sidebar.php'; ?>
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
