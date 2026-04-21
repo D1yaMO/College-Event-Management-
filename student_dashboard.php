@@ -1,9 +1,32 @@
 <?php
 session_start();
+
+// 🔒 CHECK LOGIN FIRST
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
     header("Location: login.html");
     exit();
 }
+
+// 🔌 DB CONNECTION
+$conn = new mysqli("localhost", "root", "", "event_management");
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$email = $_SESSION['email'];
+
+// 🔹 TOTAL EVENTS
+$totalEventsQuery = $conn->query("SELECT COUNT(*) as count FROM events");
+$totalEvents = $totalEventsQuery->fetch_assoc()['count'];
+
+// 🔹 REGISTERED EVENTS
+$registeredQuery = $conn->query("SELECT COUNT(*) as count FROM registrations WHERE student_email='$email'");
+$registered = $registeredQuery->fetch_assoc()['count'];
+
+// 🔹 TEMP VALUES
+$attended = 0;
+$achievements = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,9 +45,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
 <body>
 
 <button class="menu-toggle" onclick="toggleMenu()">
-  <i class="fas fa-bars"></i>
+  ☰
 </button>
-
 <div class="dashboard-container">
 
   <!-- SIDEBAR -->
@@ -88,29 +110,29 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
     </header>
 
     <!-- STATS -->
-    <section class="stats-grid">
+<section class="stats-grid">
 
-      <div class="glass-card stat-card">
-        <span class="value">12</span>
-        <span class="label">Total Events</span>
-      </div>
+  <div class="glass-card stat-card">
+    <span class="value"><?php echo $totalEvents; ?></span>
+    <span class="label">Total Events</span>
+  </div>
 
-      <div class="glass-card stat-card">
-        <span class="value">5</span>
-        <span class="label">Registered</span>
-      </div>
+  <div class="glass-card stat-card">
+    <span class="value"><?php echo $registered; ?></span>
+    <span class="label">Registered</span>
+  </div>
 
-      <div class="glass-card stat-card">
-        <span class="value">4</span>
-        <span class="label">Attended</span>
-      </div>
+  <div class="glass-card stat-card">
+    <span class="value"><?php echo $attended; ?></span>
+    <span class="label">Attended</span>
+  </div>
 
-      <div class="glass-card stat-card">
-        <span class="value">2</span>
-        <span class="label">Achievements</span>
-      </div>
+  <div class="glass-card stat-card">
+    <span class="value"><?php echo $achievements; ?></span>
+    <span class="label">Achievements</span>
+  </div>
 
-    </section>
+</section>
 
     <!-- QUICK ACCESS -->
     <section class="dash-grid">
@@ -121,10 +143,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
         <p>Join technical & cultural groups</p>
       </a>
 
-      <a href="std_dash_upcoming_event.html" class="glass-card dash-item">
+      <a href="std_dash_upcoming_event.php" class="glass-card dash-item">
         <i class="fas fa-calendar-alt"></i>
         <h3>Upcoming</h3>
-        <p>Don't miss out on latest events</p>
+        <p>Dont miss out on latest events</p>
       </a>
 
       <a href="std_dash_event_recap.html" class="glass-card dash-item">
@@ -159,7 +181,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
 
 <script>
 function toggleMenu() {
-  document.getElementById('sidebar').classList.toggle('active');
+  const sidebar = document.getElementById('sidebar');
+  const main = document.querySelector('.main-content');
+
+  sidebar.classList.toggle('closed');
+  main.classList.toggle('full');
 }
 </script>
 
