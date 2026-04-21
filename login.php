@@ -1,4 +1,5 @@
 <?php
+session_set_cookie_params(0, "/");
 session_start();
 
 $conn = new mysqli("localhost", "root", "", "event_management");
@@ -7,16 +8,19 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['role'])) {
+if (isset($_POST['email'], $_POST['password'], $_POST['role'])) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    // ✅ FIXED QUERY (only email)
-    $stmt = $conn->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
+    $stmt = $conn->prepare("
+        SELECT id, name, email, password, role, department, usn, phone, semester 
+        FROM users 
+        WHERE email = ?
+    ");
 
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -24,21 +28,35 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['role'])
 
         $user = $result->fetch_assoc();
 
-        // ✅ CHECK PASSWORD
         if (password_verify($password, $user['password'])) {
 
-            // ✅ CHECK ROLE MATCH
             if ($role !== $user['role']) {
                 echo "<script>alert('Wrong role selected'); window.location.href='login.html';</script>";
                 exit();
             }
 
-            // ✅ SET SESSION
+            // 🔥 SESSION SET
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
+            $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
+            $_SESSION['department'] = $user['department'];
+            $_SESSION['usn'] = $user['usn'];
+            $_SESSION['phone'] = $user['phone'];
+            $_SESSION['semester'] = $user['semester'];
 
-            // ✅ REDIRECT BASED ON ROLE
+            // 🔥 PROFILE CHECK (IMPORTANT FIX)
+            if (
+                empty($user['usn']) ||
+                empty($user['phone']) ||
+                empty($user['semester']) ||
+                empty($user['department'])
+            ) {
+                header("Location: complete_profile.php");
+                exit();
+            }
+
+            // 🔥 REDIRECT AFTER PROFILE COMPLETE
             if ($user['role'] === 'student') {
                 header("Location: student_dashboard.php");
             } elseif ($user['role'] === 'faculty') {
@@ -58,9 +76,6 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['role'])
     }
 
     $stmt->close();
-
-} else {
-    echo "<script>alert('Please fill all fields'); window.location.href='login.html';</script>";
 }
 
 $conn->close();
