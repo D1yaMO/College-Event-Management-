@@ -1,6 +1,15 @@
 <?php
-session_set_cookie_params(0, "/");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 session_start();
+
+echo "Login PHP is working"; // TEMP DEBUG
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $conn = new mysqli("localhost", "root", "", "event_management");
 
@@ -35,7 +44,6 @@ if (isset($_POST['email'], $_POST['password'], $_POST['role'])) {
                 exit();
             }
 
-            // 🔥 SESSION SET
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['email'] = $user['email'];
@@ -45,7 +53,6 @@ if (isset($_POST['email'], $_POST['password'], $_POST['role'])) {
             $_SESSION['phone'] = $user['phone'];
             $_SESSION['semester'] = $user['semester'];
 
-            // 🔥 PROFILE CHECK (IMPORTANT FIX)
             if (
                 empty($user['usn']) ||
                 empty($user['phone']) ||
@@ -56,7 +63,6 @@ if (isset($_POST['email'], $_POST['password'], $_POST['role'])) {
                 exit();
             }
 
-            // 🔥 REDIRECT AFTER PROFILE COMPLETE
             if ($user['role'] === 'student') {
                 header("Location: student_dashboard.php");
             } elseif ($user['role'] === 'faculty') {

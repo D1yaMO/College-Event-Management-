@@ -1,13 +1,19 @@
 <?php
-session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-// 🔒 CHECK LOGIN FIRST
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
+// SAFE session start
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// 🔒 AUTH CHECK
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
     header("Location: login.html");
     exit();
 }
 
-// 🔌 DB CONNECTION
+// DB CONNECTION
 $conn = new mysqli("localhost", "root", "", "event_management");
 
 if ($conn->connect_error) {
@@ -16,100 +22,112 @@ if ($conn->connect_error) {
 
 $email = $_SESSION['email'];
 
-// 🔹 TOTAL EVENTS
+/* -------------------------
+   TOTAL EVENTS
+--------------------------*/
 $totalEventsQuery = $conn->query("SELECT COUNT(*) as count FROM events");
 $totalEvents = $totalEventsQuery->fetch_assoc()['count'];
 
-// 🔹 REGISTERED EVENTS
-$registeredQuery = $conn->query("SELECT COUNT(*) as count FROM registrations WHERE student_email='$email'");
-$registered = $registeredQuery->fetch_assoc()['count'];
+/* -------------------------
+   REGISTERED EVENTS (SAFE)
+--------------------------*/
+$stmt = $conn->prepare("SELECT COUNT(*) as count FROM registrations WHERE student_email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+$registered = $result->fetch_assoc()['count'];
 
-// 🔹 TEMP VALUES
+/* -------------------------
+   TEMP VALUES (later DB)
+--------------------------*/
 $attended = 0;
 $achievements = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Dashboard | CDG</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | CDG</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/globals.css">
-  <link rel="stylesheet" href="assets/dashboard.css">
+<link rel="stylesheet" href="assets/globals.css">
+<link rel="stylesheet" href="assets/dashboard.css">
 </head>
 
 <body>
 
-<button class="menu-toggle" onclick="toggleMenu()">
-  ☰
-</button>
+<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+
 <div class="dashboard-container">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-    <div class="sidebar-header">
-      <img src="assets/student.png"
-           alt="Profile"
-           onerror="this.src='https://ui-avatars.com/api/?name=<?php echo $_SESSION['name']; ?>&background=f59e0b&color=fff'">
+  <div class="sidebar-header">
 
-      <h3><?php echo htmlspecialchars($_SESSION['name']); ?></h3>
-      <p style="font-size: 0.8rem; color: var(--text-muted);">
-        Student ID: #12345
-      </p>
-    </div>
+    <img src="assets/student.png"
+         alt="Profile"
+         onerror="this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($_SESSION['name']); ?>&background=f59e0b&color=fff'">
 
-    <nav class="sidebar-nav">
+    <h3><?php echo htmlspecialchars($_SESSION['name']); ?></h3>
 
-      <a href="student_profile.php" class="nav-link">
-        <i class="fas fa-user-circle"></i> Profile
-      </a>
+    <p style="font-size:0.8rem;color:var(--text-muted);">
+      Student ID: <?php echo htmlspecialchars($_SESSION['usn'] ?? $_SESSION['user_id']); ?>
+    </p>
 
-      <a href="notifications.php" class="nav-link">
-        <i class="fas fa-bell"></i> Notifications
-      </a>
+  </div>
 
-      <a href="attendance.php" class="nav-link">
-        <i class="fas fa-calendar-check"></i> Attendance
-      </a>
+  <nav class="sidebar-nav">
 
-      <a href="achievements.php" class="nav-link">
-        <i class="fas fa-award"></i> Achievements
-      </a>
+    <a href="student_profile.php" class="nav-link">
+      <i class="fas fa-user-circle"></i> Profile
+    </a>
 
-      <a href="request_faculty.php" class="nav-link">
-        <i class="fas fa-user-shield"></i> Faculty Access
-      </a>
+    <a href="notifications.php" class="nav-link">
+      <i class="fas fa-bell"></i> Notifications
+    </a>
 
-    </nav>
+    <a href="attendance.php" class="nav-link">
+      <i class="fas fa-calendar-check"></i> Attendance
+    </a>
 
-    <div class="sidebar-footer">
-      <form action="logout.php" method="post">
-        <button type="submit" class="btn btn-outline"
-                style="width:100%; border-color:#ef4444; color:#ef4444;">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-      </form>
-    </div>
+    <a href="achievements.php" class="nav-link">
+      <i class="fas fa-award"></i> Achievements
+    </a>
 
-  </aside>
+    <a href="request_faculty.php" class="nav-link">
+      <i class="fas fa-user-shield"></i> Faculty Access
+    </a>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
+  </nav>
 
-    <!-- HEADER -->
-    <header class="content-header">
-      <h1>
-        Welcome back, <?php echo explode(' ', $_SESSION['name'])[0]; ?>! 👋
-      </h1>
-      <p>Here's what's happening in your campus today.</p>
-    </header>
+  <div class="sidebar-footer">
 
-    <!-- STATS -->
+    <form action="logout.php" method="post">
+      <button type="submit" class="btn btn-outline"
+              style="width:100%;border-color:#ef4444;color:#ef4444;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </form>
+
+  </div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+
+<header class="content-header">
+  <h1>
+    Welcome back, <?php echo explode(' ', $_SESSION['name'])[0]; ?>! 👋
+  </h1>
+  <p>Here's what's happening in your campus today.</p>
+</header>
+
+<!-- STATS -->
 <section class="stats-grid">
 
   <div class="glass-card stat-card">
@@ -134,58 +152,54 @@ $achievements = 0;
 
 </section>
 
-    <!-- QUICK ACCESS -->
-    <section class="dash-grid">
+<!-- QUICK ACCESS -->
+<section class="dash-grid">
 
-      <a href="std_dash_club.html" class="glass-card dash-item">
-        <i class="fas fa-users"></i>
-        <h3>Clubs</h3>
-        <p>Join technical & cultural groups</p>
-      </a>
+  <a href="std_dash_club.html" class="glass-card dash-item">
+    <i class="fas fa-users"></i>
+    <h3>Clubs</h3>
+    <p>Join technical & cultural groups</p>
+  </a>
 
-      <a href="std_dash_upcoming_event.php" class="glass-card dash-item">
-        <i class="fas fa-calendar-alt"></i>
-        <h3>Upcoming</h3>
-        <p>Dont miss out on latest events</p>
-      </a>
+  <a href="std_dash_upcoming_event.php" class="glass-card dash-item">
+    <i class="fas fa-calendar-alt"></i>
+    <h3>Upcoming</h3>
+    <p>Don't miss out on latest events</p>
+  </a>
 
-      <a href="std_dash_event_recap.html" class="glass-card dash-item">
-        <i class="fas fa-film"></i>
-        <h3>Event Recap</h3>
-        <p>Relive the memories</p>
-      </a>
+  <a href="std_dash_event_recap.html" class="glass-card dash-item">
+    <i class="fas fa-film"></i>
+    <h3>Event Recap</h3>
+    <p>Relive the memories</p>
+  </a>
 
-      <a href="std_dash_my_reg.html" class="glass-card dash-item">
-        <i class="fas fa-check-double"></i>
-        <h3>My Events</h3>
-        <p>Your registered activities</p>
-      </a>
+  <a href="std_dash_my_reg.html" class="glass-card dash-item">
+    <i class="fas fa-check-double"></i>
+    <h3>My Events</h3>
+    <p>Your registered activities</p>
+  </a>
 
-      <a href="qr_checkin.html" class="glass-card dash-item">
-        <i class="fas fa-qrcode"></i>
-        <h3>QR Check-in</h3>
-        <p>Quick entry to venues</p>
-      </a>
+  <a href="qr_checkin.html" class="glass-card dash-item">
+    <i class="fas fa-qrcode"></i>
+    <h3>QR Check-in</h3>
+    <p>Quick entry to venues</p>
+  </a>
 
-      <a href="venue_navigation.html" class="glass-card dash-item">
-        <i class="fas fa-map-marked-alt"></i>
-        <h3>Navigation</h3>
-        <p>Find your way around</p>
-      </a>
+  <a href="venue_navigation.html" class="glass-card dash-item">
+    <i class="fas fa-map-marked-alt"></i>
+    <h3>Navigation</h3>
+    <p>Find your way around</p>
+  </a>
 
-    </section>
+</section>
 
-  </main>
-
+</main>
 </div>
 
 <script>
 function toggleMenu() {
-  const sidebar = document.getElementById('sidebar');
-  const main = document.querySelector('.main-content');
-
-  sidebar.classList.toggle('closed');
-  main.classList.toggle('full');
+  document.getElementById('sidebar').classList.toggle('closed');
+  document.querySelector('.main-content').classList.toggle('full');
 }
 </script>
 
