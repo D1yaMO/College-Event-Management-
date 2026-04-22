@@ -5,6 +5,8 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
     header("Location: login.html");
     exit();
 }
+
+$conn = new mysqli("localhost","root","","event_management");
 ?>
 
 <!DOCTYPE html>
@@ -21,21 +23,26 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
 <link rel="stylesheet" href="assets/dashboard.css">
 
 <style>
-.request-card {
-  margin-bottom: 1rem;
-  padding: 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+.request-card{
+  padding:1.2rem;
+  border:1px solid var(--border-color);
+  border-radius:12px;
+  background:rgba(255,255,255,0.03);
 }
-.action-btns {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-.approve-btn { background: #10b981; }
-.reject-btn { background: #ef4444; }
-</style>
 
+.action-btns{
+  margin-top:1rem;
+}
+
+.primary-btn{
+  background:#ef4444;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:8px;
+  text-decoration:none;
+  display:inline-block;
+}
+</style>
 </head>
 
 <body>
@@ -46,92 +53,96 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'club_admin') {
 
 <div class="dashboard-container">
 
- <?php include 'sidebar.php'; ?>
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
+<?php include 'sidebar.php'; ?>
 
-    <header class="content-header">
-      <h1>Welcome, <?php echo $_SESSION['name']; ?> 👋</h1>
-      <p>Manage your club activities from one central hub.</p>
-    </header>
+<!-- MAIN CONTENT -->
+<main class="main-content">
 
-    <div style="display:grid; grid-template-columns:2fr 1.2fr; gap:2rem;">
+<header class="content-header">
+  <h1>Welcome, <?php echo $_SESSION['name']; ?> 👋</h1>
+  <p>Manage your club activities from one central hub.</p>
+</header>
 
-      <!-- LEFT COLUMN -->
-      <div class="left-col">
+<div style="display:grid; grid-template-columns:2fr 1.2fr; gap:2rem;">
 
-        <section class="glass-card">
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
 
-          <h2 style="margin-bottom:1.5rem;">
-            <i class="fas fa-user-shield" style="color:var(--primary);"></i>
-            Faculty Requests
-          </h2>
+    <!-- ONLY FEATURE -->
+    <section class="glass-card">
 
-          <?php
-          $conn = new mysqli("localhost","root","","event_management");
+      <h2 style="margin-bottom:1rem;">
+        <i class="fas fa-user-check" style="color:var(--primary);"></i>
+        Attendance System
+      </h2>
 
-          if ($conn->connect_error) {
-              echo "<p style='color:red;'>Connection failed</p>";
-          } else {
+      <div class="request-card">
 
-              $result = $conn->query("SELECT * FROM faculty_requests WHERE status='pending'");
+        <p style="color:var(--text-muted);">
+          Upload student CSV and send attendance request to faculty for approval.
+        </p>
 
-              if ($result && $result->num_rows > 0) {
-
-                  while ($row = $result->fetch_assoc()) {
-          ?>
-
-          <div class="request-card">
-            <p><strong><?php echo $row['name']; ?></strong>
-            (<?php echo $row['email']; ?>)</p>
-
-            <div class="action-btns">
-              <a href="approve_faculty.php?id=<?php echo $row['user_id']; ?>"
-                 class="btn approve-btn">Approve</a>
-
-              <a href="reject_faculty.php?id=<?php echo $row['user_id']; ?>"
-                 class="btn reject-btn">Reject</a>
-            </div>
-          </div>
-
-          <?php
-                  }
-
-              } else {
-                  echo "<p style='color:var(--text-muted);'>No pending requests</p>";
-              }
-
-              $conn->close();
-          }
-          ?>
-
-        </section>
+        <div class="action-btns">
+          <a href="club_admin_send_request.php" class="primary-btn">
+            + Create Attendance Request
+          </a>
+        </div>
 
       </div>
 
-      <!-- RIGHT COLUMN -->
-      <div class="right-col">
+    </section>
 
-        <section class="glass-card">
+  </div>
 
-          <h2 style="margin-bottom:1.5rem;">
-            <i class="fas fa-bolt" style="color:var(--primary);"></i>
-            Quick Info
-          </h2>
+  <!-- RIGHT COLUMN -->
+ <section class="glass-card">
 
-          <p style="color:var(--text-muted);">
-            Welcome to your admin dashboard. Use the sidebar to manage events,
-            registrations, and equipment requests.
-          </p>
+  <h2 style="margin-bottom:1rem;">
+    <i class="fas fa-info-circle" style="color:var(--primary);"></i>
+    Help
+  </h2>
 
-        </section>
+  <p style="color:var(--text-muted); font-size:0.9rem;">
+    Need help? Click below to understand how attendance requests work.
+  </p>
 
-      </div>
+  <button onclick="toggleHelp()" style="
+    margin-top:10px;
+    padding:8px 12px;
+    border:none;
+    border-radius:8px;
+    background:#1e293b;
+    color:#fff;
+    cursor:pointer;
+  ">
+    View Steps
+  </button>
 
-    </div>
+  <!-- HIDDEN HELP -->
+  <div id="helpBox" style="
+    display:none;
+    margin-top:10px;
+    font-size:0.85rem;
+    color:var(--text-muted);
+    line-height:1.6;
+  ">
+    1. Upload student CSV<br>
+    2. Assign faculty<br>
+    3. Faculty approves request<br>
+    4. Attendance process starts
+  </div>
 
-  </main>
+</section>
+<script>
+function toggleHelp() {
+  let box = document.getElementById("helpBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
+</script>
 
+</div>
+
+</main>
 </div>
 
 <script>

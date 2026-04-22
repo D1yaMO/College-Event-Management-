@@ -1,387 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CDG – Campus Digital Gateway | MVJ College of Engineering</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/globals.css">
-  <style>
-    /* Custom Index Styles */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 1.5rem 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      background: transparent;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    nav.scrolled {
-      padding: 1rem 8%;
-      background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
-    }
+<title>CDG – Campus Digital Gateway | MVJ College of Engineering</title>
 
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--primary);
-      letter-spacing: -1.5px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      align-items: center;
-    }
+<style>
+:root{
+  --bg:#0f172a;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
 
-    .nav-links a {
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: var(--text-main);
-      opacity: 0.8;
-    }
+  --primary:#ef4444;
+  --secondary:#f97316;
 
-    .nav-links a:hover {
-      opacity: 1;
-      color: var(--primary);
-    }
+  --border:rgba(255,255,255,0.14);
+}
 
-    /* Hero Section */
-    .hero {
-      height: 100vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter,sans-serif;
+}
 
-    .hero video {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      filter: brightness(0.4) saturate(1.2);
-    }
+body{
+  background:var(--bg);
+  color:var(--text);
+  scroll-behavior:smooth;
+}
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), var(--bg-dark));
-    }
+/* NAV */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:1rem 8%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:1000;
+}
 
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 1000px;
-      padding: 0 5%;
-    }
+nav.scrolled{
+  background:rgba(15,23,42,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
 
-    .hero h1 {
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.04em;
-    }
+.logo{
+  font-weight:900;
+  font-size:1.4rem;
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+}
 
-    .hero h1 span {
-      background: linear-gradient(135deg, var(--primary), #fbbf24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+.logo::before{
+  content:"";
+  width:12px;
+  height:12px;
+  border-radius:3px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
 
-    .hero-subtext {
-      font-size: 1.25rem;
-      color: var(--text-muted);
-      margin-bottom: 3rem;
-      max-width: 700px;
-      margin-inline: auto;
-    }
+/* NAV */
+.nav-links{
+  display:flex;
+  gap:1rem;
+}
 
-    /* Stats Section */
-    .section-padding {
-      padding: 120px 8%;
-    }
+.nav-links a{
+  padding:0.5rem 1rem;
+  border:1px solid var(--border);
+  border-radius:10px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:0.9rem;
+}
 
-    .section-header {
-      text-align: center;
-      margin-bottom: 80px;
-    }
+.nav-links a:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+}
 
-    .section-header h2 {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 800;
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-    }
+.nav-links a.btn{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border:none;
+  color:white;
+}
 
-    .section-header p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin-inline: auto;
-    }
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+}
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
+.hero video{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(0.45);
+}
 
-    .stat-card {
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
+.overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(15,23,42,0.2),var(--bg));
+}
 
-    .stat-card:hover {
-      transform: translateY(-10px);
-      border-color: var(--primary);
-      background: rgba(255, 255, 255, 0.08);
-    }
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:900px;
+  padding:0 5%;
+}
 
-    .stat-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-      filter: grayscale(0.5);
-      transition: 0.4s ease;
-    }
+.hero h1{
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  font-weight:900;
+}
 
-    .stat-card:hover img {
-      filter: grayscale(0);
-      transform: scale(1.05);
-    }
+.hero span{
+  color:var(--primary);
+}
 
-    .stat-number {
-      font-size: 3rem;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-    }
+.hero p{
+  margin-top:1rem;
+  color:var(--muted);
+}
 
-    .stat-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
+/* BUTTONS */
+.hero-btns{
+  margin-top:2rem;
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 
-    .stat-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
+.btn{
+  padding:0.9rem 1.6rem;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
+}
 
-    /* Events Section */
-    .events-carousel {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
-    }
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+}
 
-    .event-card {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      aspect-ratio: 4/5;
-      cursor: pointer;
-    }
+.btn-outline{
+  border:1px solid var(--border);
+  color:white;
+}
 
-    .event-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+/* SECTION */
+.section{
+  padding:100px 8%;
+  position:relative;
+}
 
-    .event-card:hover img {
-      transform: scale(1.1);
-    }
+.section::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:8%;
+  right:8%;
+  height:1px;
+  background:linear-gradient(to right,transparent,var(--border),transparent);
+}
 
-    .event-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 2rem;
-      transition: background 0.4s ease;
-    }
+.section h2{
+  font-size:2.2rem;
+  margin-bottom:1rem;
+}
 
-    .event-card:hover .event-overlay {
-      background: linear-gradient(to top, rgba(15, 23, 42, 1), rgba(15, 23, 42, 0.4));
-    }
+.section p{
+  color:var(--muted);
+}
 
-    .event-info h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
+/* EVENTS (cleaner cards) */
+.events{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;
+  margin-top:3rem;
+}
 
-    .event-info p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.4s ease;
-    }
+.event{
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.03);
+  transition:.3s;
+}
 
-    .event-card:hover .event-info p {
-      opacity: 1;
-      transform: translateY(0);
-    }
+.event:hover{
+  transform:translateY(-6px);
+  border-color:var(--primary);
+}
 
-    .login-badge {
-      display: inline-flex;
-      padding: 0.5rem 1rem;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+.event img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
 
-    footer {
-      padding: 4rem 8%;
-      text-align: center;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
+.event-content{
+  padding:1.2rem;
+}
 
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .section-padding { padding: 80px 5%; }
-    }
-  </style>
+.badge{
+  background:var(--primary);
+  font-size:0.7rem;
+  padding:0.3rem 0.6rem;
+  border-radius:50px;
+  display:inline-block;
+  margin-bottom:0.5rem;
+}
+
+/* STRENGTH SECTION */
+.glance{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:2rem;
+  margin-top:3rem;
+}
+
+.glance-card{
+  text-align:center;
+  padding:1.5rem;
+  border:1px solid var(--border);
+  border-radius:16px;
+}
+
+.glance-number{
+  font-size:2rem;
+  font-weight:800;
+  color:var(--primary);
+}
+
+/* FOOTER */
+footer{
+  padding:4rem 8%;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:2rem;
+  margin-bottom:2rem;
+}
+
+footer h4{
+  color:white;
+  margin-bottom:1rem;
+}
+
+footer a{
+  display:block;
+  color:var(--muted);
+  text-decoration:none;
+  margin-bottom:0.5rem;
+}
+
+footer a:hover{
+  color:var(--primary);
+}
+</style>
 </head>
+
 <body>
 
-<nav id="navbar">
+<!-- NAV -->
+<nav id="nav">
   <div class="logo">CDG</div>
   <div class="nav-links">
     <a href="#home">Home</a>
-    <a href="#impact">Impact</a>
+    <a href="#about">About</a>
     <a href="#events">Events</a>
-    <a href="login.html" class="btn btn-outline" style="padding: 0.5rem 1.5rem;">Login</a>
+    <a href="login.html" class="btn">Login</a>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero" id="home">
-  <video autoplay muted loop playsinline>
-    <source src="assets/video_3.mp4" type="video/mp4">
+  <video autoplay muted loop>
+    <source src="assets/video_3.mp4">
   </video>
-  <div class="hero-overlay"></div>
+  <div class="overlay"></div>
+
   <div class="hero-content">
-    <h1>Connect, Experience, <span>Thrive.</span></h1>
-    <p class="hero-subtext">
-      The ultimate hub for events, clubs, and student achievements at MVJ College of Engineering.
-    </p>
-    <div class="btn-group" style="display: flex; gap: 1rem; justify-content: center;">
-      <a href="login.html" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">Get Started</a>
-      <a href="#impact" class="btn btn-outline" style="padding: 1rem 2.5rem; font-size: 1.1rem;">Explore Campus</a>
+    <h1>Campus Digital <span>Gateway</span></h1>
+    <p>Unified platform for events, clubs and student engagement at MVJ College of Engineering.</p>
+
+    <div class="hero-btns">
+      
+<a href="javascript:void(0)" onclick="checkLogin()" class="btn btn-outline explore-btn" style="border:2px solid var(--primary); box-shadow:0 0 12px rgba(239,68,68,0.4); font-weight:700;">
+  Explore Events
+</a>
     </div>
   </div>
 </section>
 
-<section class="section-padding" id="impact">
-  <div class="section-header">
-    <h2>Campus Impact</h2>
-    <p>Empowering students through innovation, creativity, and a vibrant community culture.</p>
+<!-- EVENTS (IMPROVED) -->
+<!-- EVENTS SYSTEM (UPGRADED STRUCTURE) -->
+<section class="section" id="events">
+
+  <h2>Campus Events & Activities</h2>
+  <p>Explore workshops, cultural programs, technical events, and national-level competitions at MVJCE</p>
+
+  <!-- CATEGORY LABELS -->
+  <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:2rem;">
+    <span style="padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:50px;font-size:0.8rem;">Upcoming</span>
+    <span style="padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:50px;font-size:0.8rem;">Workshops</span>
+    <span style="padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:50px;font-size:0.8rem;">Cultural</span>
+    <span style="padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:50px;font-size:0.8rem;">Technical</span>
+    <span style="padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:50px;font-size:0.8rem;">National</span>
+    <span style="padding:0.4rem 0.8rem;border:1px solid var(--border);border-radius:50px;font-size:0.8rem;">Recap</span>
   </div>
-  <div class="stats-grid">
-    <div class="glass-card stat-card">
-      <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80" alt="Events">
-      <div class="stat-number">120+</div>
-      <div class="stat-title">Events Hosted</div>
-      <p class="stat-desc">From national hackathons to cultural festivals, we bring the best opportunities to your doorstep.</p>
+
+  <div class="events">
+
+    <!-- UPCOMING -->
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+      <div class="event-content">
+        <span class="badge">Upcoming</span>
+        <h3>TechnoFest 2026</h3>
+        <p>Flagship technical festival featuring coding, robotics and innovation challenges.</p>
+      </div>
     </div>
-    <div class="glass-card stat-card">
-      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Clubs">
-      <div class="stat-number">35</div>
-      <div class="stat-title">Active Clubs</div>
-      <p class="stat-desc">A diverse ecosystem of technical and cultural clubs fostering leadership and talent.</p>
+
+    <!-- WORKSHOPS -->
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952">
+      <div class="event-content">
+        <span class="badge">Workshop</span>
+        <h3>AI & Machine Learning</h3>
+        <p>Hands-on training on AI models, data science and real-world applications.</p>
+      </div>
     </div>
-    <div class="glass-card stat-card">
-      <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" alt="Students">
-      <div class="stat-number">5000+</div>
-      <div class="stat-title">Student Engagement</div>
-      <p class="stat-desc">A thriving community of passionate individuals collaborating and growing together.</p>
+
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d">
+      <div class="event-content">
+        <span class="badge">Workshop</span>
+        <h3>Music & Singing</h3>
+        <p>Vocal training, band practice and stage performance development.</p>
+      </div>
     </div>
+
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79">
+      <div class="event-content">
+        <span class="badge">Workshop</span>
+        <h3>Dance Workshop</h3>
+        <p>Professional choreography and stage performance training sessions.</p>
+      </div>
+    </div>
+
+    <!-- CULTURAL -->
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30">
+      <div class="event-content">
+        <span class="badge">Cultural</span>
+        <h3>SWAYAM</h3>
+        <p>Annual cultural festival celebrating talent, creativity and student expression.</p>
+      </div>
+    </div>
+
+    <!-- NATIONAL TECH EVENT -->
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1551818255-e6e10975bc17">
+      <div class="event-content">
+        <span class="badge">National Event</span>
+        <h3>VERTECHX</h3>
+        <p>National-level technical symposium with hackathons and innovation challenges.</p>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<section class="section-padding" id="events" style="background: rgba(255,255,255,0.02);">
-  <div class="section-header">
-    <h2>Upcoming Highlights</h2>
-    <p>Don't miss out on the most anticipated events of the semester.</p>
+
+<!-- RECAP SECTION -->
+<section class="section">
+
+  <h2>Event Recap</h2>
+  <p>Highlights from recent campus activities and achievements</p>
+
+  <div class="events">
+
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d">
+      <div class="event-content">
+        <span class="badge">Completed</span>
+        <h3>Hackathon 2026</h3>
+        <p>24-hour coding challenge with innovative student solutions.</p>
+      </div>
+    </div>
+
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1503424886307-b090341d25d1">
+      <div class="event-content">
+        <span class="badge">Completed</span>
+        <h3>AI Workshop Bootcamp</h3>
+        <p>Intensive training on AI fundamentals and real-world deployment.</p>
+      </div>
+    </div>
+
+    <div class="event">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1">
+      <div class="event-content">
+        <span class="badge">Completed</span>
+        <h3>Freshers Induction</h3>
+        <p>Orientation program welcoming new students to campus life.</p>
+      </div>
+    </div>
+
   </div>
-  <div class="events-carousel">
-    <div class="event-card" onclick="window.location.href='login.html'">
-      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80" alt="Tech">
-      <div class="event-overlay">
-        <div class="event-info">
-          <span class="login-badge">Login Required</span>
-          <h3>TechnoFest 2026</h3>
-          <p>The biggest annual technical symposium with workshops, drones, and coding battles.</p>
-        </div>
-      </div>
+</section>
+     
+
+<!-- MVJ STYLE STRENGTHS -->
+<section class="section">
+  <h2>MVJ College of Engineering</h2>
+  <p>Strengths at a Glance</p>
+
+  <div class="glance">
+
+    <div class="glance-card">
+      <div class="glance-number">15</div>
+      <p>UG Programmes</p>
     </div>
-    <div class="event-card" onclick="window.location.href='login.html'">
-      <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80" alt="Cultural">
-      <div class="event-overlay">
-        <div class="event-info">
-          <span class="login-badge">Login Required</span>
-          <h3>Cultural Night</h3>
-          <p>A spectacular evening showcasing music, dance, and theatrical brilliance.</p>
-        </div>
-      </div>
+
+    <div class="glance-card">
+      <div class="glance-number">8</div>
+      <p>PG Programmes</p>
     </div>
-    <div class="event-card" onclick="window.location.href='login.html'">
-      <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80" alt="Sports">
-      <div class="event-overlay">
-        <div class="event-info">
-          <span class="login-badge">Login Required</span>
-          <h3>Inter-College Sports</h3>
-          <p>Compete with the best and show your athletic prowess in our annual sports meet.</p>
-        </div>
-      </div>
+
+    <div class="glance-card">
+      <div class="glance-number">9</div>
+      <p>Research Centers</p>
     </div>
+
+    <div class="glance-card">
+      <div class="glance-number">Modern</div>
+      <p>Campus Infrastructure</p>
+    </div>
+
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <p>&copy; 2026 CDG – Campus Digital Gateway | MVJ College of Engineering</p>
+
+  <div class="footer-grid">
+
+    <div>
+      <h4>Explore More</h4>
+      <a href="#">Placements</a>
+      <a href="#">Curriculum</a>
+      <a href="#">Apply Now</a>
+      <a href="#">Facilities</a>
+    </div>
+
+    <div>
+      <h4>Campus Life</h4>
+      <a href="#">Clubs</a>
+      <a href="#">Events</a>
+      <a href="#">Achievements</a>
+      <a href="#">News</a>
+    </div>
+
+    <div>
+      <h4>Contact</h4>
+      <p>MVJ College of Engineering, Whitefield, Bangalore</p>
+      <p>+91 80 4299 1000</p>
+      <p>helpdesk@mvjce.edu.in</p>
+    </div>
+
+  </div>
+
+  <p>© 2026 MVJCE | CDG Campus Portal</p>
+
 </footer>
 
 <script>
-  window.addEventListener("scroll", () => {
-    const nav = document.getElementById("navbar");
-    if (window.scrollY > 100) {
-      nav.classList.add("scrolled");
-    } else {
-      nav.classList.remove("scrolled");
-    }
-  });
+window.addEventListener("scroll",()=>{
+  document.getElementById("nav").classList.toggle("scrolled",window.scrollY>80);
+});
 </script>
+<script>
+function checkLogin() {
 
+  // TEMP FIX: session-aware logic won't work in .html
+  // so we simulate login check using PHP-free safe fallback
+
+  let isLoggedIn = sessionStorage.getItem("loggedIn");
+
+  if (!isLoggedIn) {
+    alert("Please login to explore events");
+    window.location.href = "login.html";
+  } else {
+    document.getElementById("events").scrollIntoView({ behavior: "smooth" });
+  }
+}
+</script>
 </body>
 </html>
