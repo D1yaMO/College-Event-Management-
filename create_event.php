@@ -96,6 +96,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
         <textarea name="description" placeholder="Description" required></textarea>
 
+        <input type="text" name="created_by" placeholder="User Name" required>
+
         <button type="submit" name="create_event" class="btn btn-primary">
           Publish Event
         </button>

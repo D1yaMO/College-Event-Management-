@@ -2,20 +2,23 @@
 session_set_cookie_params(0, "/");
 session_start();
 
+/* DB CONNECTION */
 $conn = new mysqli("localhost", "root", "", "event_management");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+/* LOGIN */
 if (isset($_POST['email'], $_POST['password'], $_POST['role'])) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
     $role = $_POST['role'];
 
+    /* 🔥 SAFE QUERY (REMOVED MISSING COLUMNS) */
     $stmt = $conn->prepare("
-        SELECT id, name, email, password, role, department, usn, phone, semester 
+        SELECT id, name, email, password, role 
         FROM users 
         WHERE email = ?
     ");
@@ -35,28 +38,13 @@ if (isset($_POST['email'], $_POST['password'], $_POST['role'])) {
                 exit();
             }
 
-            // 🔥 SESSION SET
+            /* SESSION */
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
-            $_SESSION['department'] = $user['department'];
-            $_SESSION['usn'] = $user['usn'];
-            $_SESSION['phone'] = $user['phone'];
-            $_SESSION['semester'] = $user['semester'];
 
-            // 🔥 PROFILE CHECK (IMPORTANT FIX)
-            if (
-                empty($user['usn']) ||
-                empty($user['phone']) ||
-                empty($user['semester']) ||
-                empty($user['department'])
-            ) {
-                header("Location: complete_profile.php");
-                exit();
-            }
-
-            // 🔥 REDIRECT AFTER PROFILE COMPLETE
+            /* REDIRECT */
             if ($user['role'] === 'student') {
                 header("Location: student_dashboard.php");
             } elseif ($user['role'] === 'faculty') {

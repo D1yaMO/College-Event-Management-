@@ -59,7 +59,7 @@ if (isset($_GET['delete'])) {
       </h2>
 
       <div style="overflow-x:auto;">
-        <table style="width:100%; border-collapse: collapse;">
+        <table style="width:100%; border-collapse: collapse; text-align: center">
 
           <tr style="background: var(--surface-dark);">
             <th style="padding:10px;">ID</th>
@@ -67,11 +67,12 @@ if (isset($_GET['delete'])) {
             <th>Date</th>
             <th>Venue</th>
             <th>Description</th>
+            <th>Created By</th>
             <th>Action</th>
           </tr>
 
           <?php
-          $result = $conn->query("SELECT * FROM events ORDER BY id DESC");
+          $result = $conn->query("SELECT * FROM events ORDER BY id ASC");
 
           if ($result->num_rows > 0) {
               while($row = $result->fetch_assoc()) {
@@ -82,7 +83,8 @@ if (isset($_GET['delete'])) {
             <td><?php echo $row['event_date']; ?></td>
             <td><?php echo $row['venue']; ?></td>
             <td><?php echo $row['description']; ?></td>
-            <td style="display:flex; gap:6px;">
+            <td><?php echo $row['created_by']; ?></td>
+            <td style="display:flex; gap:4px;">
   <a href="edit_event.php?id=<?php echo $row['id']; ?>" 
      class="btn"
      style="background:#3b82f6; color:white; padding:6px 12px; border-radius:6px;">
